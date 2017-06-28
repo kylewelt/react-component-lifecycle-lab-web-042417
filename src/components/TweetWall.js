@@ -1,26 +1,41 @@
-import React from 'react';
-import Tweet from './Tweet';
+import React from 'react'
+import Tweet from './Tweet'
 
 class TweetWall extends React.Component {
   constructor(props) {
-    super(props);
-    
+    super(props)
+
     this.state = {
       tweets: []
-    };
+    }
   }
 
-  // TODO: componentWillMount()
-  // TODO: shouldComponentUpdate()
-  // TODO: componentWillReceiveProps()
+  componentWillMount () {
+    this.setState({
+      tweets: this.props.newTweets
+    })
+  }
 
-  render() {
-    const tweets = this.state.tweets.map((tweet, index) => <Tweet text={tweet.text} key={index} />);
+  componentWillReceiveProps (nextProps) {
+    // console.log(nextProps.newTweets)
+    nextProps.newTweets.forEach(tweet => {
+      this.setState({
+        tweets: [tweet, ...this.state.tweets]
+      })
+    })
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return nextProps.newTweets.length > 0
+  }
+
+  render () {
+    const tweets = this.state.tweets.map((tweet, index) => <Tweet text={tweet.text} key={index} />)
 
     return (
       <div>{tweets}</div>
-    );
+    )
   }
 }
 
-export default TweetWall;
+export default TweetWall
